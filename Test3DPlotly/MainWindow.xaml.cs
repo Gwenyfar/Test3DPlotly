@@ -41,31 +41,20 @@ public partial class MainWindow : Window
 
     private GenericChart TestSurf()
     {
-        int size = 50;
+        int size = 100; double scale = double.Pi/50;
+        double[] X = [.. Enumerable.Range(0, size).Select(i => i * scale)];
+        double[] Y = [.. Enumerable.Range(0, size).Select(j => j * scale)];
         double[,] z = new double[size, size];
-
-        double scale = 0.5;
-
         for (int i = 0; i < size; i++)
-        {
             for (int j = 0; j < size; j++)
-            {
-                double x = i * scale;
-                double y = j * scale;
-
-                z[i, j] = Math.Sin(x) + Math.Sin(y);
-            }
-        }
-
-        return PlotlyService.Surf(z, "3D Sine Surface");
+                z[i, j] = Math.Sin(X[i]) + Math.Sin(Y[j]);
+        return PlotlyService.Surf(X, Y, z, "3D Sine Surface");
     }
 
     private async Task DisplayChart(GenericChart chart)
     {
         await WebView.EnsureCoreWebView2Async();
-
         string html = GenericChart.toEmbeddedHTML(chart);
-
         WebView.CoreWebView2.NavigateToString(html);
     }
 }
