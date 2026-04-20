@@ -24,7 +24,6 @@ public partial class MainWindow : Window
             var chart = TestSurf();
 
             await DisplayChart(chart);
-            //WebView.CoreWebView2.NavigateToString(html);
         }
         catch (Exception ex)
         {
@@ -67,6 +66,6 @@ public partial class MainWindow : Window
 
         string html = GenericChart.toEmbeddedHTML(chart);
 
-        WebView.NavigateToString(html);
+        WebView.CoreWebView2.NavigateToString(html);
     }
 }
