@@ -1,6 +1,8 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using Plotly.NET;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace Test3DPlotly;
 
@@ -21,7 +23,10 @@ public partial class MainWindow : Window
             // var chart = TestPlot();
 
             // test surf
-            var chart = TestSurf();
+            // var chart = TestSurf();
+
+            // test mesh
+            var chart = TestMesh();
 
             await DisplayChart(chart);
         }
@@ -48,6 +53,26 @@ public partial class MainWindow : Window
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
                 z[i, j] = Math.Sin(X[i]) + Math.Sin(Y[j]);
+        return PlotlyService.Surf(X, Y, z, "3D Sine Surface");
+    }
+
+    private GenericChart TestMesh()
+    {
+        int size = 51; double scale = double.Pi/50, theta, phi;
+        double[,] X = new double[size, size];
+        double[,] Y = new double[size, size];
+        double[,] z = new double[size, size];
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                theta = 2 * i * scale; // Azimuthal angle
+                phi = j * scale;
+                X[i, j] = Math.Cos(theta) * Math.Sin(phi);
+                Y[i, j] = Math.Sin(theta) * Math.Sin(phi);
+                z[i, j] = Math.Cos(phi);
+            }
+        }
         return PlotlyService.Surf(X, Y, z, "3D Sine Surface");
     }
 
